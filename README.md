@@ -91,6 +91,10 @@ Alcántara Rodriguez, J. A. (2026). *Linking allele-frequency change to
 non-linear matrix demography: a hybrid eco-evolutionary framework*.
 Manuscript submitted for peer review.
 
+Code archived at Zenodo: https://doi.org/10.5281/zenodo.21694305
+(resolves to the latest version; the exact release cited in the manuscript
+is v2.0, https://doi.org/10.5281/zenodo.22837869).
+
 ## License
 
 MIT — see [LICENSE.txt](LICENSE.txt).
