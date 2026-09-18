@@ -3,6 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 
+C_RESIDENT = "#0072B2"   # blue
+C_HETERO   = "#CC79A7"   # reddish purple
+C_INVADER  = "#D55E00"   # vermillion
+
 # ==========================================
 # 1. THEORETICAL MATRICES (3x3 - Fast-lived Archetype)
 # ==========================================
@@ -127,9 +131,13 @@ with np.errstate(divide='ignore', invalid='ignore'):
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
 
 # Color palette matching Figure 2
-c_aa = '#08519c'      # aa
-c_Aa = 'forestgreen'  # Aa
-c_AA = 'darkorange'   # AA
+
+c_aa = "#1A5276"
+c_Aa = "#21918C"
+c_AA = "#CA6702"
+
+
+
 
 # Panel A: Frequencies
 ax1.plot(time_axis, freq_aa, label='Resident (aa)', color=c_aa, lw=3)

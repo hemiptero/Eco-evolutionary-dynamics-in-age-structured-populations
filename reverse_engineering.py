@@ -1,32 +1,21 @@
 import numpy as np
 
 """
-=============================================================================
-DESCRIPTION:
-This script performs the mathematical derivation of the demographic
-projection matrices for the homozygous morphs (DD and LL) of the common
-buzzard (Buteo buteo). Because explicit stage-specific vital rates for these
-morphs were not published in the original analytical model (de Vries &
-Caswell, 2019), this script reverse-engineers them using a baseline-and-
-scaling approach.
+Appendix A — reconstruction of the DD and LL projection matrices.
 
-KEY OPERATIONS:
-1. Baseline scaling: multiplies the empirical vital rates of the high-fitness
-   heterozygous morph (DL) by a specific factor to exactly match the target
-   asymptotic growth rates (lambda = 0.48 for DD; lambda = 0.68 for LL).
-2. Lifespan truncation: enforces biological lifespan constraints by zeroing
-   out demographic transitions once the oldest reachable age class stops
-   receiving inflow (row truncation one index earlier than the column/
-   fecundity truncation, since the last living age class still contributes
-   fecundity but produces no further survivors).
-3. SAD & carrying capacity allocation: computes the dominant eigenvector
-   (Stable Age Distribution, SAD) of the resident matrix to distribute the
-   total effective carrying capacity (K_eff) across age classes.
+Explicit vital rates for the homozygous Buteo buteo morphs were not published
+in the source analytical model (de Vries & Caswell, 2019). This script derives
+them from the high-fitness heterozygote (DL) by:
 
-OUTPUT:
-Generates the formatted NumPy arrays (matrices and vectors) required to
-parameterize the main eco-evolutionary simulation in 'plot_fig2_buteo.py'.
-=============================================================================
+  1. Scaling the baseline vital rates to match the reported asymptotic growth
+     rates (lambda = 0.48 for DD, 0.68 for LL).
+  2. Truncating transitions once the oldest reachable age class stops receiving
+     inflow; the row is truncated one index earlier than the fecundity column,
+     since the last living class still reproduces but produces no survivors.
+  3. Computing the stable age distribution of the resident matrix to allocate
+     the density-feedback constant and the initial abundance across age classes.
+
+Output: the formatted arrays used to parameterise plot_fig2_buteo.py.
 """
 
 # --- 1. BASELINE MATRIX (DL HETEROZYGOTE) ---
@@ -52,12 +41,12 @@ L_DD = L_DL.copy() * factor_DD
 L_DD[7:, :] = 0
 L_DD[:, 7:] = 0
 
-# LL: rows truncated from index 7 onward, columns (fecundity) from index 8
-#     onward (row 6 retains its subdiagonal survival value, matching
-#     equation 22 in Appendix A).
+# LL: rows truncated from index 8 onward, columns (fecundity) from index 8
+#     onward (row 7 retains its subdiagonal survival value, matching
+#     equation 22 in Appendix A: LL reaches one age class beyond DD).
 factor_LL = 0.68 / 1.04
 L_LL = L_DL.copy() * factor_LL
-L_LL[7:, :] = 0
+L_LL[8:, :] = 0
 L_LL[:, 8:] = 0
 
 # --- 3. STRUCTURAL VECTOR CALCULATION ---
